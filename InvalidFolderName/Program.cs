@@ -6,50 +6,50 @@ class Program
 {
     static void Main()
     {
-        string klasorYolu = @"C:\Users\BerkerOsanc.YYTPBERKEROSANC\Desktop\test";
+        string folderPath = @"Your Local Folder Path";
 
-        string[] dosyaListesi = Directory.GetFiles(klasorYolu);
+        string[] fileList = Directory.GetFiles(folderPath);
 
-        foreach (var dosyaYolu in dosyaListesi)
+        foreach (var filePath in fileList)
         {
-            DuzenleVeYenidenAdlandir(dosyaYolu);
+            EditAndRename(filePath);
         }
 
-        Console.WriteLine("İşlem tamamlandı. Programı kapatmak için bir tuşa basın.");
+        Console.WriteLine("Operation completed. Press any key to close the program.");
         Console.ReadKey();
     }
 
-    static void DuzenleVeYenidenAdlandir(string dosyaYolu)
+    static void EditAndRename(string filePath)
     {
         try
         {
-            string dosyaAdi = Path.GetFileNameWithoutExtension(dosyaYolu);
-            string dosyaUzantisi = Path.GetExtension(dosyaYolu);
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
+            string fileExtension = Path.GetExtension(filePath);
 
-            string duzenlenmisAd = string.Join("-", dosyaAdi.Split(' ')).ToLower();
+            string editedName = string.Join("-", fileName.Split(' ')).ToLower();
 
-            duzenlenmisAd = TurkceToIngilizce(duzenlenmisAd);
+            editedName = TurkishToEnglish(editedName);
 
-            string yeniDosyaAdi = $"{duzenlenmisAd}{dosyaUzantisi}";
+            string newFileName = $"{editedName}{fileExtension}";
 
-            File.Move(dosyaYolu, Path.Combine(Path.GetDirectoryName(dosyaYolu), yeniDosyaAdi));
+            File.Move(filePath, Path.Combine(Path.GetDirectoryName(filePath), newFileName));
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Hata oluştu: {ex.Message}");
+            Console.WriteLine($"An error occurred: {ex.Message}");
         }
     }
 
-    static string TurkceToIngilizce(string metin)
+    static string TurkishToEnglish(string text)
     {
-        string[] turkceKarakterler = { "ğ", "ü", "ş", "ı", "i", "ö", "ç", "Ğ", "Ü", "Ş", "I", "İ", "Ö", "Ç" };
-        string[] ingilizceKarakterler = { "g", "u", "s", "i", "i", "o", "c", "G", "U", "S", "I", "I", "O", "C" };
+        string[] turkishCharacters = { "ğ", "ü", "ş", "ı", "i", "ö", "ç", "Ğ", "Ü", "Ş", "I", "İ", "Ö", "Ç" };
+        string[] englishCharacters = { "g", "u", "s", "i", "i", "o", "c", "G", "U", "S", "I", "I", "O", "C" };
 
-        for (int i = 0; i < turkceKarakterler.Length; i++)
+        for (int i = 0; i < turkishCharacters.Length; i++)
         {
-            metin = metin.Replace(turkceKarakterler[i], ingilizceKarakterler[i]);
+            text = text.Replace(turkishCharacters[i], englishCharacters[i]);
         }
 
-        return metin;
+        return text;
     }
 }
